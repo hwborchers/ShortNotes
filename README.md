@@ -10,4 +10,4 @@
 
     It is quite easy to actually prove by hand that 4,6,8,12,18,24,30 are the only magical numbers up to 30. That there are no more magical numbers follows from Dirichlet's theorem and the fact, if p1, p2, ..., pn are the first n primes, that p{n+1}^2 < p1 p2 ... pn for n >= 4 !
 
-    [Le Monde Puzzle 1048](http://htmlpreview.github.io/?https://hwborchers/ShortNotes/blob/master/LeMonde1048.html)
+    [Le Monde Puzzle 1048](http://htmlpreview.github.io/?https://github.com/hwborchers/ShortNotes/blob/master/LeMonde1048.html)
