@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Hans W. Borchers" />
+
+
+<title>Le Monde Puzzle #1048</title>
+
+<script src="LeMonde1048_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="LeMonde1048_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="LeMonde1048_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="LeMonde1048_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="LeMonde1048_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="LeMonde1048_files/navigation-1.1/tabsets.js"></script>
+<link href="LeMonde1048_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="LeMonde1048_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Le Monde Puzzle #1048</h1>
+<h4 class="author"><em>Hans W. Borchers</em></h4>
+<h4 class="date"><em>April 1, 2018</em></h4>
+
+</div>
+
+
+<p> </p>
+<p>The Le Monde Puzzle #1048 from April 1, 2018, says:</p>
+<blockquote>
+<p>A magical integer m is such that the remainder of the division of any prime number p by m is either a prime number or 1. What is the unique magical integer between 25 and 100? And is there any less than 25?</p>
+</blockquote>
+<p>It is quite easy to actually prove by hand that 4,6,8,12,18,24,30 are the only magical numbers up to 30. That there are no more magical numbers follows from Dirichlet’s theorem and the fact, if <span class="math inline">\(p_1, p_2, ..., p_n\)</span> are the first n primes, that <span class="math inline">\(p_{n+1}^2 &lt; p_1 \cdot ... \cdot p_n\)</span> for <span class="math inline">\(n \ge 4\)</span> !</p>
+<p>The first remark is that the problem reduces to look at the <em>rest classes</em> modulo a number <span class="math inline">\(m\)</span>, i.e., <span class="math inline">\(m\)</span> is ‘magical’ if for all primes <span class="math inline">\(p\)</span> the rest class <span class="math inline">\(\mod(p, m)\)</span> is 1 or a prime. <span class="math inline">\(m\)</span> itself cannot be prime because <span class="math inline">\(\mod(p, p) = 0\)</span>.</p>
+<p>Remember that there are always (infinitely many) primes in an <em>arithmetic progression</em> <span class="math inline">\(\{a \cdot m + r | \, a = 0, 1, 2, ...\}\)</span> if <span class="math inline">\(m\)</span> and <span class="math inline">\(r\)</span> are coprime. For <span class="math inline">\(m\)</span> to be non-‘magical’ there must be a rest class <span class="math inline">\(r\)</span> such that <span class="math inline">\(r\)</span> is not 1, not a prime, and coprime to <span class="math inline">\(m\)</span>.</p>
+<p>The first composite number would be 4, but its rest classes are <span class="math inline">\(0, 1, 2, 3\)</span> and thus <span class="math inline">\(\mod(p, 4)\)</span> is 1 or prime. This continues for <span class="math inline">\(m = 6\)</span> <span class="math inline">\(m = 8\)</span>, the next interesting case being <span class="math inline">\(m = 10\)</span>. Here <span class="math inline">\(r = 9\)</span> fulfills the conditions and 10 is not ‘magical’. The same kind of argument applies to all numbers up to 30 resulting in 4,6,8,12,18,24,30 being ‘magical’.</p>
+<p>Looking at the possible rest classes <span class="math inline">\(0, 1, 2, 3, 4, 5, ...\)</span> for larger <span class="math inline">\(m\)</span>, it becomes clear that <span class="math inline">\(m\)</span> must be divisible by 2, 3, and 5 at least to prevent the remainders 4, 9, and 25 to come into the way with non-primes in their rest classes. <span class="math inline">\(m = 60\)</span> is prevented by 49, the next possible ‘magical’ number can only be <span class="math inline">\(m = 210 = 2 \cdot 3 \cdot 5 \cdot 7\)</span>, prevented by <span class="math inline">\(11^2 = 121 &lt; 210\)</span>.</p>
+<p>This argument again continues: If <span class="math inline">\(m = p_1 \cdot ... \cdot p_n\)</span>, where <span class="math inline">\(p_1, ..., p_n\)</span> are the first <span class="math inline">\(n\)</span> primes, then <span class="math inline">\(p_{n+1}^2\)</span> is a rest class that is non-prime and coprime to <span class="math inline">\(m\)</span>. And it is smaller than <span class="math inline">\(m\)</span> because <span class="math inline">\(p_{n+1}^2 &lt; p_1 \cdot ... \cdot p_n\)</span> for all <span class="math inline">\(n \ge 4\)</span>. This concludes to show that there are no more ‘magical’ numbers.</p>
+<p>(Note: The last inequality follows from Bertrand’s Postulate:</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(p_{n+1}&lt; 2 p_n\)</span><br />
+</li>
+<li><span class="math inline">\(p_{n+1}^2 &lt; 4 p_n^2 &lt; 8 p_n p_{n-1}\)</span><br />
+</li>
+<li><span class="math inline">\(p_{n+1}^2 &lt; p_1 p_2 p_3 ... p_{n-1} p_n\)</span></li>
+</ol>
+<p>for <span class="math inline">\(n \ge 5\)</span> (and for <span class="math inline">\(n = 4\)</span> by direct verification, see <span class="math inline">\(p_5 = 11\)</span>).</p>
+<p>Reference: <a href="https://xianblog.wordpress.com/2018/04/01/le-monde-puzzle-1047/" class="uri">https://xianblog.wordpress.com/2018/04/01/le-monde-puzzle-1047/</a></p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
