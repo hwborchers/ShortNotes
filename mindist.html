@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Hans W. Borchers" />
+
+<meta name="date" content="2018-04-11" />
+
+<title>Linear Projection as Optimization Problem</title>
+
+<script src="mindist_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="mindist_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="mindist_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="mindist_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="mindist_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="mindist_files/navigation-1.1/tabsets.js"></script>
+<link href="mindist_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="mindist_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Linear Projection as Optimization Problem</h1>
+<h4 class="author"><em>Hans W. Borchers</em></h4>
+<h4 class="date"><em>2018-04-11</em></h4>
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="linear-projection-as-optimization-task" class="section level3">
+<h3>Linear Projection as Optimization Task</h3>
+<p>Given an affine subspace <span class="math inline">\(S\)</span> of <span class="math inline">\(\mathrm{R}^n\)</span>, defined through a matrix equation <span class="math inline">\(A x = b\)</span> with a matrix <span class="math inline">\(A\)</span> of size <span class="math inline">\((m, n)\)</span> and a vector <span class="math inline">\(b\)</span> of length <span class="math inline">\(m\)</span>, the task is to find the <em>projection</em> of a point <span class="math inline">\(p_0\)</span> onto this subspace. We could solve this problem as a pure Linear Algebra task. Then we would look at a decomposition of <span class="math inline">\(\mathrm{R}^n\)</span> as an orthogonal sum <span class="math inline">\(A \oplus U\)</span> of <span class="math inline">\(A\)</span> and another subspace <span class="math inline">\(U\)</span>. Then represent <span class="math inline">\(p_0\)</span> in a basis of <span class="math inline">\(U\)</span>.</p>
+<p>Here we will solve the problem as an optimization task. If <span class="math inline">\(p\)</span> is the projection of <span class="math inline">\(p0\)</span> on <span class="math inline">\(A\)</span>, then the distance between <span class="math inline">\(p0\)</span> and <span class="math inline">\(p\)</span> is minimal for all points in <span class="math inline">\(S\)</span>, that is <span class="math inline">\(p\)</span> with <span class="math inline">\(A p = b\)</span>. We will solve this for an example with <span class="math inline">\(n = 1000\)</span> and <span class="math inline">\(m = 100\)</span>.</p>
+</div>
+<div id="generating-example-data" class="section level3">
+<h3>Generating Example Data</h3>
+<pre class="r"><code>set.seed(65537)
+n = 1000; m = 100
+p0 &lt;- rep(0, n)
+Aeq &lt;- matrix(runif(m*n), nrow = m)
+beq &lt;- rep(1, m)</code></pre>
+</div>
+</div>
+<div id="solving-the-optimization-task" class="section level2">
+<h2>Solving the Optimization Task</h2>
+<div id="solution-with-quadprog" class="section level3">
+<h3>Solution with <em>quadprog</em></h3>
+<pre class="r"><code>library(quadprog)
+
+Q = diag(n)
+d = as.matrix(p0)
+A = t(Aeq)
+b = as.matrix(beq)
+
+system.time( sol &lt;- solve.QP(Q, d, A, b, meq=m) )</code></pre>
+<pre><code>##    user  system elapsed 
+##   1.308   0.000   1.307</code></pre>
+<pre class="r"><code>p = sol$solution
+d = sqrt(sum((p - p0)^2))
+cat(&quot;The minimal distance is:&quot;, d)</code></pre>
+<pre><code>## The minimal distance is: 0.06597077</code></pre>
+</div>
+<div id="solution-with-cvxr" class="section level3">
+<h3>Solution with <em>CVXR</em></h3>
+<pre class="r"><code>library(CVXR)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;CVXR&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     power</code></pre>
+<pre class="r"><code>x   = Variable(n)
+obj = Minimize( sum((p0 - x)^2) )
+con = list(Aeq %*% x == beq)
+pro = Problem(obj, con)
+
+system.time( sol &lt;- solve(pro) )</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.465   0.016   0.481</code></pre>
+<pre class="r"><code>cat(&quot;The minimal distance is:&quot;, sqrt(sol$value))</code></pre>
+<pre><code>## The minimal distance is: 0.06597077</code></pre>
+<p>We can also try out the other available solver, SCS:</p>
+<pre class="r"><code>system.time( sol &lt;- solve(pro, solver = &quot;SCS&quot;) )</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.207   0.000   0.207</code></pre>
+</div>
+<div id="use-the-ecos-solver-directly" class="section level3">
+<h3>Use the ECOS Solver Directly</h3>
+<p>Instead of employing <em>CVXR</em> we can call the underlying ECOS solver directly. First we define the <code>mindist</code> function that builds the necessary matrices and then sends them to <code>ECOS_csolve</code>.</p>
+<pre class="r"><code>library(ECOSolveR)
+
+mindist &lt;- function(x0, Aeq, beq) {
+    n &lt;- length(x0)
+    cc &lt;- c(rep(0, n), 1)
+    A_eq &lt;- Matrix::Matrix(cbind(Aeq, 0), sparse = TRUE)
+    b_eq &lt;- beq
+    A2 &lt;- rbind(c(rep(0, n), -1),
+                cbind(diag(1, n), 0))
+    G &lt;- Matrix::Matrix(rbind(A2), sparse = TRUE)
+    h &lt;- c(0, x0)
+    sol &lt;- ECOS_csolve(cc, G = G, h = h,
+                       dims = list(q = as.integer(n+1)),
+                       A = A_eq, b = b_eq)
+    return(list(point = sol$x[1:n], dist = sol$x[n+1],
+                message = sol$infostring))
+}</code></pre>
+<pre class="r"><code>system.time(sol &lt;- mindist(p0, Aeq, beq))</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.624   0.007   0.631</code></pre>
+<pre class="r"><code>cat(&quot;The minimal distance is:&quot;, sol$dist)</code></pre>
+<pre><code>## The minimal distance is: 0.06597077</code></pre>
+</div>
+<div id="prepare-for-several-projections" class="section level3">
+<h3>Prepare for Several Projections</h3>
+<p>Or we set up the matrices needed before we call the solver:</p>
+<pre class="r"><code>n = length(p0)
+cc = c(rep(0, n), 1)
+A_eq = Matrix::Matrix(cbind(Aeq, 0), sparse = TRUE)
+b_eq = beq
+A2 = rbind(c(rep(0, n), -1),
+           cbind(diag(1, n), 0))
+G &lt;- Matrix::Matrix(rbind(A2), sparse = TRUE)
+h &lt;- c(0, p0)
+system.time(
+    sol &lt;- ECOS_csolve(cc, G = G, h = h,
+                       dims = list(q = as.integer(n+1)),
+                       A = A_eq, b = b_eq)
+)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.239   0.004   0.242</code></pre>
+<pre class="r"><code>dist = sol$x[n+1]
+cat(&quot;The minimal distance is:&quot;, d)</code></pre>
+<pre><code>## The minimal distance is: 0.06597077</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
